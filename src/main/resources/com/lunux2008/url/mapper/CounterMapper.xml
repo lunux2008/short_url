@@ -1,0 +1,27 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lunux2008.url.mapper.CounterMapper">
+	<resultMap type="com.lunux2008.url.domain.Counter" id="counter_map">
+	    <id column="id" property="id"/>
+	    <result column="code" property="code"/>
+	    <result column="current" property="current"/>
+	</resultMap>
+
+    <select id="selectByCounterMd5" resultType="com.lunux2008.url.domain.Counter">
+        select id, md5, code, current, url from counter where md5 = #{md5} limit 1
+    </select>
+
+	<select id="selectByCounterCode" resultType="com.lunux2008.url.domain.Counter">
+        select id, md5, code, current, url from counter where code = #{code} limit 1 for update
+    </select>
+
+    <insert id="insertCounter" useGeneratedKeys="true" keyProperty="id">
+    	insert into counter (md5,code,current,url)
+  		values (#{counter.md5},#{counter.code},#{counter.current},#{counter.url})
+    </insert>
+
+    <update id="updateCounter">
+    	update counter set current=#{counter.current} where md5=#{counter.md5}
+    </update>
+</mapper>
